@@ -57,7 +57,7 @@ export async function getUser(sessionToken: string): Promise<User | null> {
     return null;
   }
   
-  return userData as User;
+  return userData as unknown as User;
 }
 
 /**
@@ -92,7 +92,7 @@ export async function createUser(
   };
   
   // Store user data
-  await redis.hset(`user:${sessionToken}`, user);
+  await redis.hset(`user:${sessionToken}`, user as unknown as Record<string, unknown>);
   
   // Create email -> session_token mapping for lookup
   await redis.set(`email:${email.toLowerCase()}`, sessionToken);
@@ -107,7 +107,7 @@ export async function updateUser(
   sessionToken: string,
   data: Partial<Omit<User, 'id' | 'email' | 'session_token' | 'created_at'>>
 ): Promise<void> {
-  await redis.hset(`user:${sessionToken}`, data);
+  await redis.hset(`user:${sessionToken}`, data as Record<string, unknown>);
 }
 
 /**
@@ -150,7 +150,7 @@ export async function getUsageCount(sessionToken: string): Promise<number> {
  * Create payment record
  */
 export async function createPayment(payment: Payment): Promise<void> {
-  await redis.hset(`payment:${payment.payment_intent_id}`, payment);
+  await redis.hset(`payment:${payment.payment_intent_id}`, payment as unknown as Record<string, unknown>);
 }
 
 /**
@@ -163,7 +163,7 @@ export async function getPayment(paymentIntentId: string): Promise<Payment | nul
     return null;
   }
   
-  return paymentData as Payment;
+  return paymentData as unknown as Payment;
 }
 
 /**
