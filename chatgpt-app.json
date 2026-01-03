@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_model": "splitwise",
+  "name_for_human": "Splitwise Expense Tracker",
+  "description_for_model": "Track and manage expenses using Splitwise. Add expenses, view analytics, set defaults, and get spending insights through natural conversation. Supports OAuth connection, category auto-detection, and payment gating (3 free messages, then $0.99 one-time).",
+  "description_for_human": "Track expenses in Splitwise naturally. Add expenses, view analytics, and manage your shared costs.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "mcp",
+    "url": "https://your-app.vercel.app/api/mcp",
+    "has_user_authentication": true
+  },
+  "logo_url": "https://your-app.vercel.app/logo.png",
+  "contact_email": "support@example.com",
+  "legal_info_url": "https://your-app.vercel.app/legal"
+}
