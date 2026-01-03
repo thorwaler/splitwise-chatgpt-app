@@ -158,7 +158,7 @@ export class SplitwiseClient {
 
     // Update database with new tokens
     await updateUser(this.sessionToken, {
-      splitwise_access_token: encrypt(this.accessToken),
+      splitwise_access_token: this.accessToken ? encrypt(this.accessToken) : undefined,
       splitwise_refresh_token: this.refreshToken ? encrypt(this.refreshToken) : undefined,
       splitwise_token_expires: this.expiresAt,
     });
