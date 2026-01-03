@@ -7,14 +7,29 @@
 
 import { Redis } from '@upstash/redis';
 
-if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
-  throw new Error('Missing Upstash Redis environment variables');
+// Lazy Redis client initialization
+let redisClient: Redis | null = null;
+
+function getRedis(): Redis {
+  if (!redisClient) {
+    if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+      throw new Error('Missing Upstash Redis environment variables');
+    }
+    redisClient = new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    });
+  }
+  return redisClient;
 }
 
-// Initialize Redis client
-export const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+// Export getter instead of direct client
+export const redis = new Proxy({} as Redis, {
+  get: (target, prop) => {
+    const client = getRedis();
+    const value = client[prop as keyof Redis];
+    return typeof value === 'function' ? value.bind(client) : value;
+  }
 });
 
 // Types

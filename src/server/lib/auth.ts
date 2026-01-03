@@ -7,11 +7,12 @@
 import jwt from 'jsonwebtoken';
 import { createUser, getUser, getUserByEmail } from './database';
 
-if (!process.env.JWT_SECRET) {
-  throw new Error('Missing JWT_SECRET environment variable');
+function getJWTSecret(): string {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('Missing JWT_SECRET environment variable');
+  }
+  return process.env.JWT_SECRET;
 }
-
-const JWT_SECRET = process.env.JWT_SECRET;
 
 interface TokenPayload {
   email: string;
@@ -28,7 +29,7 @@ export function generateSessionToken(email: string): string {
   };
   
   // Token expires in 1 year
-  const token = jwt.sign(payload, JWT_SECRET, {
+  const token = jwt.sign(payload, getJWTSecret(), {
     expiresIn: '365d',
   });
   
@@ -40,7 +41,7 @@ export function generateSessionToken(email: string): string {
  */
 export function verifySessionToken(token: string): TokenPayload | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as TokenPayload;
+    const decoded = jwt.verify(token, getJWTSecret()) as TokenPayload;
     return decoded;
   } catch (error) {
     return null;

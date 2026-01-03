@@ -7,14 +7,29 @@
 
 import Stripe from 'stripe';
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing STRIPE_SECRET_KEY environment variable');
+// Lazy Stripe client initialization
+let stripeClient: Stripe | null = null;
+
+function getStripe(): Stripe {
+  if (!stripeClient) {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      throw new Error('Missing STRIPE_SECRET_KEY environment variable');
+    }
+    stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: '2025-02-24.acacia',
+      typescript: true,
+    });
+  }
+  return stripeClient;
 }
 
-// Initialize Stripe
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-12-18.acacia',
-  typescript: true,
+// Export proxy for lazy initialization
+export const stripe = new Proxy({} as Stripe, {
+  get: (target, prop) => {
+    const client = getStripe();
+    const value = client[prop as keyof Stripe];
+    return typeof value === 'function' ? value.bind(client) : value;
+  }
 });
 
 /**
