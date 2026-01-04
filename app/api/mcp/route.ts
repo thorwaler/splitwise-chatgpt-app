@@ -13,6 +13,8 @@ import { join } from 'path';
 import { registerUserHandler, registerUserTool } from '@/src/server/tools/user/register';
 import { connectSplitwiseHandler, connectSplitwiseTool } from '@/src/server/tools/splitwise/connect';
 import { addExpenseHandler, addExpenseTool } from '@/src/server/tools/splitwise/addExpense';
+import { addExpenseEnhancedHandler, addExpenseEnhancedTool } from '@/src/server/tools/splitwise/addExpenseEnhanced';
+import { manageSplitPrefsHandler, manageSplitPrefsTool } from '@/src/server/tools/splitwise/manageSplitPrefs';
 import { getGroupsHandler, getGroupsTool } from '@/src/server/tools/splitwise/getGroups';
 import { getCategoriesHandler, getCategoriesTool } from '@/src/server/tools/splitwise/getCategories';
 import { setDefaultsHandler, setDefaultsTool } from '@/src/server/tools/splitwise/setDefaults';
@@ -50,6 +52,14 @@ const TOOLS = {
   add_expense: {
     handler: addExpenseHandler,
     definition: addExpenseTool,
+  },
+  add_expense_enhanced: {
+    handler: addExpenseEnhancedHandler,
+    definition: addExpenseEnhancedTool,
+  },
+  manage_split_preferences: {
+    handler: manageSplitPrefsHandler,
+    definition: manageSplitPrefsTool,
   },
   get_groups: {
     handler: getGroupsHandler,
