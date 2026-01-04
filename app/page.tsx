@@ -1,53 +1,142 @@
+'use client';
+
+/**
+ * OAuth Success Page
+ * 
+ * Shown after successful Splitwise connection
+ */
+
+import { useSearchParams } from 'next/navigation';
+
 export default function Home() {
+  const searchParams = useSearchParams();
+  const isConnected = searchParams.get('splitwise') === 'connected';
+  const isError = searchParams.get('splitwise') === 'error';
+  const userName = searchParams.get('user');
+  const errorMessage = searchParams.get('message');
+
   return (
-    <main style={{ padding: '2rem', fontFamily: 'system-ui, sans-serif', maxWidth: '800px', margin: '0 auto' }}>
-      <h1>Splitwise ChatGPT App</h1>
-      <p style={{ fontSize: '1.1rem', color: '#666' }}>
-        Manage your Splitwise expenses through natural conversation with ChatGPT.
-      </p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 mx-4">
+        {isConnected && (
+          <>
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-4">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Connected Successfully!
+              </h1>
+              <p className="text-lg text-gray-600">
+                Welcome, {userName || 'there'}! 👋
+              </p>
+            </div>
 
-      <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#f5f5f5', borderRadius: '8px' }}>
-        <h2 style={{ marginTop: 0 }}>✨ Features</h2>
-        <ul>
-          <li>Add expenses via natural language</li>
-          <li>Auto-match categories from conversation</li>
-          <li>View spending analytics</li>
-          <li>Set defaults for quick entry</li>
-          <li>Connect with your Splitwise account</li>
-        </ul>
-      </div>
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+              <p className="text-sm text-green-800 font-medium mb-2">
+                ✅ Your Splitwise account is now connected
+              </p>
+              <p className="text-sm text-green-700">
+                You can now add expenses, check balances, and manage your groups directly from ChatGPT!
+              </p>
+            </div>
 
-      <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#e8f5e9', borderRadius: '8px' }}>
-        <h2 style={{ marginTop: 0 }}>💰 Pricing</h2>
-        <p style={{ fontSize: '1.5rem', margin: '0.5rem 0' }}>
-          <strong>$0.99</strong> <span style={{ textDecoration: 'line-through', color: '#999' }}>$9.99</span>
-          <span style={{ marginLeft: '0.5rem', color: '#4caf50', fontWeight: 'bold' }}>90% OFF!</span>
-        </p>
-        <p>One-time payment • Lifetime access • 3 free messages to try</p>
-      </div>
+            <div className="space-y-3 mb-6">
+              <h2 className="text-sm font-semibold text-gray-900 mb-2">
+                What you can do now:
+              </h2>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="flex items-start">
+                  <span className="text-green-600 mr-2">•</span>
+                  <span>"Add €50 for groceries to my group"</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-green-600 mr-2">•</span>
+                  <span>"Show my spending this month"</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-green-600 mr-2">•</span>
+                  <span>"What are my groups?"</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="text-green-600 mr-2">•</span>
+                  <span>"Set my default group to bonitos"</span>
+                </div>
+              </div>
+            </div>
 
-      <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#fff3e0', borderRadius: '8px' }}>
-        <h2 style={{ marginTop: 0 }}>🚀 Getting Started</h2>
-        <ol>
-          <li>Open ChatGPT and enable Developer Mode</li>
-          <li>Add the Splitwise connector with your MCP endpoint</li>
-          <li>Start chatting: "Add $50 for groceries to my roommates group"</li>
-        </ol>
-      </div>
+            <button
+              onClick={() => window.close()}
+              className="w-full bg-green-600 text-white rounded-lg py-3 px-4 font-medium hover:bg-green-700 transition-colors"
+            >
+              Return to ChatGPT
+            </button>
+            
+            <p className="text-xs text-gray-500 text-center mt-4">
+              You can close this window and go back to ChatGPT
+            </p>
+          </>
+        )}
 
-      <div style={{ marginTop: '2rem' }}>
-        <h2>API Endpoints</h2>
-        <ul style={{ fontFamily: 'monospace', fontSize: '0.9rem' }}>
-          <li><strong>POST /api/mcp</strong> - MCP JSON-RPC endpoint</li>
-          <li><strong>POST /api/user</strong> - User registration</li>
-          <li><strong>GET /api/user</strong> - Get user info</li>
-          <li><strong>POST /api/stripe/webhook</strong> - Payment webhooks</li>
-        </ul>
-      </div>
+        {isError && (
+          <>
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4">
+                <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Connection Failed
+              </h1>
+              <p className="text-gray-600">
+                Something went wrong
+              </p>
+            </div>
 
-      <div style={{ marginTop: '3rem', padding: '1rem', borderTop: '1px solid #ddd', color: '#666', fontSize: '0.9rem' }}>
-        <p>Built with Next.js • MCP Server • Upstash Redis • Stripe</p>
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <p className="text-sm text-red-800 font-medium mb-1">
+                Error:
+              </p>
+              <p className="text-sm text-red-700">
+                {errorMessage || 'Unable to connect to Splitwise'}
+              </p>
+            </div>
+
+            <button
+              onClick={() => window.close()}
+              className="w-full bg-gray-600 text-white rounded-lg py-3 px-4 font-medium hover:bg-gray-700 transition-colors"
+            >
+              Close Window
+            </button>
+
+            <p className="text-xs text-gray-500 text-center mt-4">
+              Go back to ChatGPT and try again
+            </p>
+          </>
+        )}
+
+        {!isConnected && !isError && (
+          <>
+            <div className="text-center">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Splitwise ChatGPT App
+              </h1>
+              <p className="text-gray-600 mb-6">
+                Manage your Splitwise expenses from ChatGPT
+              </p>
+              <p className="text-sm text-gray-500">
+                Go to ChatGPT and say: <br/>
+                <span className="font-mono bg-gray-100 px-2 py-1 rounded mt-2 inline-block">
+                  "Register me with email: your@email.com"
+                </span>
+              </p>
+            </div>
+          </>
+        )}
       </div>
-    </main>
+    </div>
   );
 }
