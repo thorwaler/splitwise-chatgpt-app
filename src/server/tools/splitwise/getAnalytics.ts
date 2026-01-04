@@ -183,7 +183,7 @@ function generateInsights(
  */
 export const getExpenseAnalyticsTool = {
   name: 'get_expense_analytics',
-  description: 'Get detailed analytics and insights about expenses. Shows spending by category, trends, and helpful insights. This is a free operation (doesn\'t count toward message limit).',
+  description: 'DEPRECATED - Use get_analytics_enhanced instead. This legacy tool only supports "last N days" lookback. The enhanced version supports specific months (e.g., "Sept 2025"), custom date ranges, visual charts, and more. Only use this tool if get_analytics_enhanced is unavailable.',
   inputSchema: {
     type: 'object',
     properties: {

@@ -523,7 +523,7 @@ function generateCharts(
  */
 export const getAnalyticsEnhancedTool = {
   name: 'get_analytics_enhanced',
-  description: 'Get advanced expense analytics with flexible date ranges, visual charts, and trends. IMPORTANT: This tool returns chart data that you MUST visualize for the user using your native chart rendering capabilities. Supports specific months (e.g., "Nov 2024"), custom date ranges, or "last N days". Includes category breakdowns, weekly trends, top expenses, and visual charts. This is a FREE operation that does NOT count toward message limits.',
+  description: 'PRIMARY ANALYTICS TOOL - Get advanced expense analytics with flexible date ranges, visual charts, and trends. SUPPORTS SPECIFIC MONTHS (e.g., "Sept 2025", "November 2024"), custom date ranges, or "last N days". IMPORTANT: This tool returns chart data that you MUST visualize for the user using your native chart rendering capabilities. Includes category breakdowns, weekly trends, top expenses, and visual charts. This is a FREE operation that does NOT count toward message limits. ALWAYS use this tool instead of get_expense_analytics.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -541,7 +541,7 @@ export const getAnalyticsEnhancedTool = {
       },
       month: {
         type: 'string',
-        description: 'Specific month to analyze. Format: "2024-11" or "Nov 2024". Use this OR days OR date_from/date_to.',
+        description: 'Specific month to analyze. Format: "2025-09" or "Sept 2025" or "September 2025". Examples: "Sept 2025", "Nov 2024", "2025-01". Use this parameter when user asks for a specific month. Use this OR days OR date_from/date_to.',
       },
       date_from: {
         type: 'string',
