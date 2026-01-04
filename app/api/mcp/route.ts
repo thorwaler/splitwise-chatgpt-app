@@ -17,6 +17,7 @@ import { getGroupsHandler, getGroupsTool } from '@/src/server/tools/splitwise/ge
 import { getCategoriesHandler, getCategoriesTool } from '@/src/server/tools/splitwise/getCategories';
 import { setDefaultsHandler, setDefaultsTool } from '@/src/server/tools/splitwise/setDefaults';
 import { getExpenseAnalyticsHandler, getExpenseAnalyticsTool } from '@/src/server/tools/splitwise/getAnalytics';
+import { getAnalyticsEnhancedHandler, getAnalyticsEnhancedTool } from '@/src/server/tools/splitwise/getAnalyticsEnhanced';
 import { checkPaymentStatus, checkPaymentStatusTool } from '@/src/server/tools/payment/checkStatus';
 import { initiatePayment, initiatePaymentTool } from '@/src/server/tools/payment/initiate';
 import { verifyPayment, verifyPaymentTool } from '@/src/server/tools/payment/verify';
@@ -65,6 +66,10 @@ const TOOLS = {
   get_expense_analytics: {
     handler: getExpenseAnalyticsHandler,
     definition: getExpenseAnalyticsTool,
+  },
+  get_analytics_enhanced: {
+    handler: getAnalyticsEnhancedHandler,
+    definition: getAnalyticsEnhancedTool,
   },
   
   // Payment tools
