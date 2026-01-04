@@ -10,6 +10,7 @@ import { readFileSync } from 'fs';
 import { join } from 'path';
 
 // Import all tools
+import { registerUserHandler, registerUserTool } from '@/src/server/tools/user/register';
 import { connectSplitwiseHandler, connectSplitwiseTool } from '@/src/server/tools/splitwise/connect';
 import { addExpenseHandler, addExpenseTool } from '@/src/server/tools/splitwise/addExpense';
 import { getGroupsHandler, getGroupsTool } from '@/src/server/tools/splitwise/getGroups';
@@ -34,6 +35,12 @@ const corsHeaders = {
  * Tool registry
  */
 const TOOLS = {
+  // User tools
+  register_user: {
+    handler: registerUserHandler,
+    definition: registerUserTool,
+  },
+  
   // Splitwise tools
   connect_splitwise: {
     handler: connectSplitwiseHandler,
