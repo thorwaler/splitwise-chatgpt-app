@@ -16,6 +16,9 @@ import { updateUser, getUser } from '@/src/server/lib/database';
 import { encrypt } from '@/src/server/lib/encryption';
 import { getUserFromToken } from '@/src/server/lib/auth';
 
+// Force dynamic rendering (uses query parameters)
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/auth/splitwise/callback
  * 

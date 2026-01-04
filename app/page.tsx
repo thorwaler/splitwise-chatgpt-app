@@ -7,8 +7,9 @@
  */
 
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function Home() {
+function PageContent() {
   const searchParams = useSearchParams();
   const isConnected = searchParams.get('splitwise') === 'connected';
   const isError = searchParams.get('splitwise') === 'error';
@@ -138,5 +139,20 @@ export default function Home() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-blue-50">
+        <div className="text-center">
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <PageContent />
+    </Suspense>
   );
 }

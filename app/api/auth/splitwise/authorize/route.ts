@@ -10,6 +10,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getAuthorizationUrl } from '@/src/server/lib/splitwise';
 import { getUserFromToken } from '@/src/server/lib/auth';
 
+// Force dynamic rendering (uses query parameters)
+export const dynamic = 'force-dynamic';
+
 /**
  * GET /api/auth/splitwise/authorize
  * 
