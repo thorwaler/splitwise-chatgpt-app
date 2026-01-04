@@ -58,9 +58,10 @@ export async function GET(request: NextRequest) {
     // Exchange code for tokens
     const tokenData = await exchangeCodeForTokens(code);
 
-    // Calculate token expiry
+    // Calculate token expiry (default to 30 days if not provided)
+    const expiresInSeconds = tokenData.expires_in || 2592000; // 30 days default
     const expiresAt = new Date(
-      Date.now() + (tokenData.expires_in * 1000)
+      Date.now() + (expiresInSeconds * 1000)
     ).toISOString();
 
     // Encrypt and store tokens

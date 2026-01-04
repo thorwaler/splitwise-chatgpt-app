@@ -46,13 +46,13 @@ export async function registerUserHandler(
  */
 export const registerUserTool = {
   name: 'register_user',
-  description: 'Register or login to get a session token. CALL THIS FIRST before using any other tools. The session_token must be included in all subsequent tool calls.',
+  description: '⚠️ REQUIRED FIRST STEP ⚠️ You MUST call this tool BEFORE any other tools will work. This registers the user and returns a session_token that is required for ALL subsequent tool calls. Call this immediately when the user first interacts with this app. Pass the user\'s email address to create their account and receive their session_token.',
   inputSchema: {
     type: 'object',
     properties: {
       email: {
         type: 'string',
-        description: 'User email address',
+        description: 'User email address for registration. This will create a new account or login existing user.',
       },
     },
     required: ['email'],

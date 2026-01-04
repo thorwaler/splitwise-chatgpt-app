@@ -296,7 +296,7 @@ export async function createSplitwiseClient(sessionToken: string): Promise<Split
 export async function exchangeCodeForTokens(code: string): Promise<{
   access_token: string;
   refresh_token: string;
-  expires_in: number;
+  expires_in?: number; // Optional - Splitwise might not return this
 }> {
   const response = await fetch(`${SPLITWISE_OAUTH_BASE}/token`, {
     method: 'POST',
