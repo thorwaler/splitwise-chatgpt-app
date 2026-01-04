@@ -97,7 +97,6 @@ function PageContent() {
               You can close this window and go back to ChatGPT
             </p>
           </div>
-          </>
         )}
 
         {isError && (
