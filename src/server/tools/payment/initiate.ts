@@ -22,6 +22,7 @@ export interface InitiatePaymentResult {
     discount_percentage: number;
   };
   expires_at: number;
+  display_instructions: string;
 }
 
 /**
@@ -68,6 +69,7 @@ export async function initiatePayment(
       discount_percentage: pricing.discountPercentage,
     },
     expires_at: checkoutSession.expires_at,
+    display_instructions: 'IMPORTANT: Display the full checkout_url exactly as provided, including all characters after the # symbol. Do not truncate or modify the URL. Present it as a clickable link.',
   };
 }
 
@@ -76,7 +78,7 @@ export async function initiatePayment(
  */
 export const initiatePaymentTool = {
   name: 'initiate_payment',
-  description: 'Create a Stripe checkout session for the user to upgrade to paid access. Returns a checkout URL.',
+  description: 'Create a Stripe checkout session for the user to upgrade to paid access. Returns a checkout URL. CRITICAL: The checkout_url contains a hash fragment (#) with encrypted payment data - you MUST display the COMPLETE URL including everything after the # symbol. Do not truncate the URL at the hash. Present it as a clickable link to the user.',
   inputSchema: {
     type: 'object',
     properties: {
