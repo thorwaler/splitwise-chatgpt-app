@@ -25,7 +25,7 @@ export interface AnalyticsChart {
   type: 'bar' | 'line' | 'pie';
   title: string;
   description: string;
-  url?: string;  // URL to chart image
+  visualization_hint: string;  // Instructions for ChatGPT on how to visualize
   data: any;     // Structured data for ChatGPT to visualize
 }
 
@@ -171,7 +171,7 @@ export async function getAnalyticsEnhancedHandler(
     trends,
     charts,
     insights,
-    message: `Analyzed ${filteredExpenses.length} expenses for ${periodDescription}`,
+    message: `Analyzed ${filteredExpenses.length} expenses for ${periodDescription}. ${charts && charts.length > 0 ? `IMPORTANT: ${charts.length} visual charts are included in the 'charts' field - please render them for the user using your chart visualization capabilities.` : ''}`,
   };
 }
 
@@ -477,6 +477,7 @@ function generateCharts(
       type: 'pie',
       title: 'Spending by Category',
       description: `Shows how your total spending of $${summary.total_amount.toFixed(2)} is distributed across categories`,
+      visualization_hint: 'Render this as a pie chart showing the percentage breakdown of spending across categories. Use the labels for category names and values for amounts.',
       data: {
         labels: byCategory.map(c => c.category),
         values: byCategory.map(c => c.total),
@@ -491,6 +492,7 @@ function generateCharts(
       type: 'line',
       title: 'Weekly Spending Trend',
       description: 'Shows how your spending has varied week by week',
+      visualization_hint: 'Render this as a line chart showing spending over time. X-axis should be week start dates, Y-axis should be total spending amount.',
       data: {
         labels: byWeek.map(w => w.week_start),
         values: byWeek.map(w => w.total),
@@ -505,6 +507,7 @@ function generateCharts(
       type: 'bar',
       title: 'Top 5 Spending Categories',
       description: 'Your highest spending categories',
+      visualization_hint: 'Render this as a horizontal or vertical bar chart showing the top 5 spending categories. X-axis should be categories, Y-axis should be spending amounts.',
       data: {
         labels: top5.map(c => c.category),
         values: top5.map(c => c.total),
@@ -520,7 +523,7 @@ function generateCharts(
  */
 export const getAnalyticsEnhancedTool = {
   name: 'get_analytics_enhanced',
-  description: 'Get advanced expense analytics with flexible date ranges, visual charts, and trends. Supports specific months (e.g., "Nov 2024"), custom date ranges, or "last N days". Includes category breakdowns, weekly trends, top expenses, and visual charts. This is a FREE operation that does NOT count toward message limits.',
+  description: 'Get advanced expense analytics with flexible date ranges, visual charts, and trends. IMPORTANT: This tool returns chart data that you MUST visualize for the user using your native chart rendering capabilities. Supports specific months (e.g., "Nov 2024"), custom date ranges, or "last N days". Includes category breakdowns, weekly trends, top expenses, and visual charts. This is a FREE operation that does NOT count toward message limits.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -530,7 +533,7 @@ export const getAnalyticsEnhancedTool = {
       },
       group_id: {
         type: 'number',
-        description: 'Filter by specific group (optional)',
+        description: 'Filter by specific group ID (optional). If user mentions a group by name, use get_groups tool ONCE to find the ID, then pass it here. Do not call get_groups if you already know the group ID.',
       },
       days: {
         type: 'number',
