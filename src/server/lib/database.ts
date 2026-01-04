@@ -122,7 +122,15 @@ export async function updateUser(
   sessionToken: string,
   data: Partial<Omit<User, 'id' | 'email' | 'session_token' | 'created_at'>>
 ): Promise<void> {
-  await redis.hset(`user:${sessionToken}`, data as Record<string, unknown>);
+  // Filter out undefined and null values (Redis doesn't accept them)
+  const cleanData = Object.fromEntries(
+    Object.entries(data).filter(([_, value]) => value !== undefined && value !== null)
+  );
+  
+  // Only update if there's data to update
+  if (Object.keys(cleanData).length > 0) {
+    await redis.hset(`user:${sessionToken}`, cleanData as Record<string, unknown>);
+  }
 }
 
 /**
