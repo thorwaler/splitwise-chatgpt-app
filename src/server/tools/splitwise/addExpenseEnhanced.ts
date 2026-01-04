@@ -251,7 +251,7 @@ export async function addExpenseEnhancedHandler(
     },
     message: `Added ${currency}${amount} expense "${description}" with ${splitDescription}`,
     usage: {
-      messages_remaining: usage.messages_remaining,
+      messages_remaining: usage.messagesRemaining,
     },
   };
 }
