@@ -108,7 +108,7 @@ export async function addExpenseHandler(
  */
 export const addExpenseTool = {
   name: 'add_expense',
-  description: 'Add an expense to Splitwise. Requires description and amount. Optionally specify category, group, currency, and date. Uses default group if not specified.',
+  description: 'DEPRECATED - Use add_expense_enhanced instead for custom splits. This basic tool only supports equal splits. The enhanced version supports percentage splits (90-10), amount splits (€45-€5), and group-specific defaults. Only use this tool if add_expense_enhanced is unavailable.',
   inputSchema: {
     type: 'object',
     properties: {

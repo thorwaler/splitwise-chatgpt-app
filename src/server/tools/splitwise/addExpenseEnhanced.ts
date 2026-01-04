@@ -288,7 +288,7 @@ async function getGroupSplitPreference(
  */
 export const addExpenseEnhancedTool = {
   name: 'add_expense_enhanced',
-  description: 'Add an expense to Splitwise with flexible split options. Supports equal splits, percentage splits (e.g., "90-10"), amount splits (e.g., "45-5"), and per-user custom splits. Can save split preferences per group for future use. This operation counts toward your message limit.',
+  description: 'PRIMARY EXPENSE TOOL - Add an expense to Splitwise with flexible split options. SUPPORTS CUSTOM SPLITS: percentage splits (e.g., "90-10" for 90% user / 10% other), amount splits (e.g., "45-5"), and equal splits. Can save split preferences per group. ALWAYS use this tool instead of add_expense. When user says "90-10 split" or any custom split, use the split_percentage parameter. This operation counts toward your message limit.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -327,7 +327,7 @@ export const addExpenseEnhancedTool = {
       },
       split_percentage: {
         type: 'string',
-        description: 'Percentage split (e.g., "90-10" for 90% / 10% split). Number of values must match group member count.',
+        description: 'Percentage split for custom splits. Examples: "90-10" (90% first person, 10% second person), "70-30", "60-40". When user says "90-10 split" or "90% me and 10% them", use this parameter. Number of values must match group member count (typically 2 for most groups).',
       },
       split_amounts: {
         type: 'string',
