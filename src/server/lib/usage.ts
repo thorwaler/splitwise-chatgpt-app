@@ -79,7 +79,7 @@ export async function checkToolAccess(
   const exceeded = await hasExceededFreeLimit(sessionToken);
   
   if (exceeded) {
-    const freeLimit = parseInt(process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT || '3');
+    const freeLimit = parseInt(process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT || '5');
     return {
       allowed: false,
       reason: `You've used all ${freeLimit} free messages. Please upgrade to continue.`,
@@ -89,7 +89,7 @@ export async function checkToolAccess(
   }
   
   // Calculate remaining messages
-  const freeLimit = parseInt(process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT || '3');
+  const freeLimit = parseInt(process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT || '5');
   const messagesRemaining = freeLimit - user.message_count;
   
   return {
@@ -120,7 +120,7 @@ export async function recordToolUsage(
     messageCount = user?.message_count || 0;
   }
   
-  const freeLimit = parseInt(process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT || '3');
+  const freeLimit = parseInt(process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT || '5');
   const messagesRemaining = Math.max(0, freeLimit - messageCount);
   
   return {
@@ -144,7 +144,7 @@ export async function getUsageSummary(sessionToken: string): Promise<{
     throw new Error('User not found');
   }
   
-  const freeLimit = parseInt(process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT || '3');
+  const freeLimit = parseInt(process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT || '5');
   const messagesRemaining = user.payment_status === 'paid' 
     ? Infinity 
     : Math.max(0, freeLimit - user.message_count);

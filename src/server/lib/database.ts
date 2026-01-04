@@ -230,7 +230,7 @@ export async function hasExceededFreeLimit(sessionToken: string): Promise<boolea
     return false;
   }
   
-  const freeLimit = parseInt(process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT || '3');
+  const freeLimit = parseInt(process.env.NEXT_PUBLIC_FREE_MESSAGE_LIMIT || '5');
   return user.message_count >= freeLimit;
 }
 
