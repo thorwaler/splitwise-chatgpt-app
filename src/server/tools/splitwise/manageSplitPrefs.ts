@@ -74,7 +74,7 @@ export async function manageSplitPrefsHandler(
       };
     }
 
-    const prefData = typeof pref === 'string' ? JSON.parse(pref) : pref;
+    const prefData = typeof pref === 'string' ? JSON.parse(pref) : pref as any;
     
     let description = '';
     let values = '';

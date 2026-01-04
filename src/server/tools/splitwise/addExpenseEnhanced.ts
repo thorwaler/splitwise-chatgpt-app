@@ -280,7 +280,7 @@ async function getGroupSplitPreference(
   
   if (!data) return null;
   
-  return typeof data === 'string' ? JSON.parse(data) : data;
+  return typeof data === 'string' ? JSON.parse(data) : (data as SplitPreference);
 }
 
 /**
