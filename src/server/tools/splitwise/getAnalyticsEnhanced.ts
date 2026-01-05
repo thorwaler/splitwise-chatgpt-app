@@ -626,3 +626,6 @@ export const getAnalyticsEnhancedTool = {
     required: ['session_token'],
   },
 };
+
+// Export alias for convenience
+export const getAnalyticsEnhanced = getAnalyticsEnhancedHandler;

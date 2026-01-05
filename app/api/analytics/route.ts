@@ -5,7 +5,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getAnalyticsEnhanced } from '@/server/tools/splitwise/getAnalyticsEnhanced';
+import { getAnalyticsEnhanced } from '@/src/server/tools/splitwise/getAnalyticsEnhanced';
 
 export async function GET(request: NextRequest) {
   try {
