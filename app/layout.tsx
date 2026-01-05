@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import './globals.css';
 
 // Force dynamic rendering for all pages (needed for OAuth callbacks and search params)
 export const dynamic = 'force-dynamic';
