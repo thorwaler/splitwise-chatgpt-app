@@ -79,6 +79,33 @@ export interface GetAnalyticsEnhancedResult {
   charts?: AnalyticsChart[];
   
   insights: string[];
+  
+  chart_data: {
+    colors: string[];
+    pieChart: {
+      data: Array<{
+        name: string;
+        value: number;
+        percentage: number;
+      }>;
+    };
+    lineChart: {
+      data: Array<{
+        week: string;
+        amount: number;
+        count: number;
+      }>;
+    };
+    barChart: {
+      data: Array<{
+        category: string;
+        amount: number;
+        percentage: number;
+      }>;
+    };
+  };
+  
+  visualization_url: string;
   message: string;
 }
 
@@ -157,6 +184,43 @@ export async function getAnalyticsEnhancedHandler(
     ? generateCharts(byCategory, byWeek, summary)
     : undefined;
 
+  // Generate visualization URL
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const visualizationParams = new URLSearchParams({
+    session_token: session_token,
+    ...(group_id && { group_id: String(group_id) }),
+    ...(month && { month }),
+    ...(days && { days: String(days) }),
+    ...(date_from && date_to && { date_from, date_to }),
+  });
+  const visualization_url = `${baseUrl}/analytics?${visualizationParams}`;
+
+  // Prepare chart data for inline React artifact
+  const chart_data = {
+    colors: ['#10b981', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#ec4899', '#84cc16', '#f97316', '#6366f1'],
+    pieChart: {
+      data: byCategory.map(cat => ({
+        name: cat.category,
+        value: cat.total,
+        percentage: cat.percentage,
+      })),
+    },
+    lineChart: {
+      data: byWeek.map(week => ({
+        week: new Date(week.week_start).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+        amount: week.total,
+        count: week.count,
+      })),
+    },
+    barChart: {
+      data: byCategory.slice(0, 5).map(cat => ({
+        category: cat.category,
+        amount: cat.total,
+        percentage: cat.percentage,
+      })),
+    },
+  };
+
   return {
     period: {
       description: periodDescription,
@@ -171,7 +235,9 @@ export async function getAnalyticsEnhancedHandler(
     trends,
     charts,
     insights,
-    message: `Analyzed ${filteredExpenses.length} expenses for ${periodDescription}. ${charts && charts.length > 0 ? `IMPORTANT: ${charts.length} visual charts are included in the 'charts' field - please render them for the user using your chart visualization capabilities.` : ''}`,
+    chart_data,
+    visualization_url,
+    message: `Analyzed ${filteredExpenses.length} expenses for ${periodDescription}. IMPORTANT: Create a React artifact (.jsx file) to display interactive Recharts. Use the chart_data field which has pre-formatted data. Import from 'recharts' and create a beautiful dashboard with PieChart (categories), LineChart (weekly trends), and BarChart (top categories). Use ResponsiveContainer for each chart. Include summary cards showing total expenses (${summary.total_expenses}), total amount (${Object.keys(summary.currency_breakdown)[0] || 'USD'} ${summary.total_amount.toFixed(2)}), and average (${Object.keys(summary.currency_breakdown)[0] || 'USD'} ${summary.average_expense.toFixed(2)}). Style with Tailwind CSS using emerald/teal colors. Make it interactive with hover tooltips. The visualization_url is available as a fallback: ${visualization_url}`,
   };
 }
 
@@ -523,7 +589,7 @@ function generateCharts(
  */
 export const getAnalyticsEnhancedTool = {
   name: 'get_analytics_enhanced',
-  description: 'PRIMARY ANALYTICS TOOL - Get advanced expense analytics with flexible date ranges, visual charts, and trends. SUPPORTS SPECIFIC MONTHS (e.g., "Sept 2025", "November 2024"), custom date ranges, or "last N days". IMPORTANT: This tool returns chart data that you MUST visualize for the user using your native chart rendering capabilities. Includes category breakdowns, weekly trends, top expenses, and visual charts. This is a FREE operation that does NOT count toward message limits. ALWAYS use this tool instead of get_expense_analytics.',
+  description: 'PRIMARY ANALYTICS TOOL - Get advanced expense analytics with flexible date ranges and interactive charts. SUPPORTS SPECIFIC MONTHS (e.g., "Sept 2025", "November 2024"), custom date ranges, or "last N days". CRITICAL INSTRUCTIONS FOR CHART RENDERING: (1) Create a React artifact (.jsx file) that imports Recharts and displays the analytics data with interactive charts. (2) Use the chart_data field which contains pre-formatted data ready for Recharts. (3) Create a beautiful dashboard with PieChart (categories), LineChart (weekly trends), and BarChart (top categories). (4) Import from "recharts": PieChart, Pie, Cell, LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer. (5) Use the provided COLORS array for consistent styling. (6) Make it responsive and interactive with hover tooltips. The visualization_url is provided as a backup if inline rendering fails. This is a FREE operation that does NOT count toward message limits. ALWAYS use this tool instead of get_expense_analytics.',
   inputSchema: {
     type: 'object',
     properties: {
