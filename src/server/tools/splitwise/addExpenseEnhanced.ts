@@ -288,7 +288,7 @@ async function getGroupSplitPreference(
  */
 export const addExpenseEnhancedTool = {
   name: 'add_expense_enhanced',
-  description: 'PRIMARY EXPENSE TOOL - Add an expense to Splitwise with flexible split options. SUPPORTS CUSTOM SPLITS: percentage splits (e.g., "90-10" for 90% user / 10% other), amount splits (e.g., "45-5"), and equal splits. Can save split preferences per group. ALWAYS use this tool instead of add_expense. When user says "90-10 split" or any custom split, use the split_percentage parameter. This operation counts toward your message limit.',
+  description: 'PRIMARY EXPENSE TOOL - Add an expense to Splitwise with flexible split options. SUPPORTS CUSTOM SPLITS IN ONE STEP: For one-time custom splits (e.g., "add €33 with 90-10 split"), use this tool directly with the split_percentage parameter - DO NOT call manage_split_preferences first. Examples: "90-10" (90% user / 10% other), "70-30", "60-40". The manage_split_preferences tool is ONLY for setting permanent defaults for all future expenses. ALWAYS use add_expense_enhanced instead of add_expense. When user says "add X with 90-10 split", directly use split_percentage="90-10" in this tool. This operation counts toward your message limit.',
   inputSchema: {
     type: 'object',
     properties: {
@@ -327,7 +327,7 @@ export const addExpenseEnhancedTool = {
       },
       split_percentage: {
         type: 'string',
-        description: 'Percentage split for custom splits. Examples: "90-10" (90% first person, 10% second person), "70-30", "60-40". When user says "90-10 split" or "90% me and 10% them", use this parameter. Number of values must match group member count (typically 2 for most groups).',
+        description: 'FOR ONE-TIME CUSTOM SPLITS: Use this parameter when user requests a specific split ratio for THIS expense (e.g., "add €33 with 90-10 split"). Examples: "90-10" (90% first person, 10% second person), "70-30", "60-40". Number of values must match group member count. DO NOT call manage_split_preferences before using this - just set this parameter directly.',
       },
       split_amounts: {
         type: 'string',

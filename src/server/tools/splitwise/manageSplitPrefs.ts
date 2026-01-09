@@ -174,7 +174,7 @@ export async function manageSplitPrefsHandler(
  */
 export const manageSplitPrefsTool = {
   name: 'manage_split_preferences',
-  description: 'View, set, or clear custom split preferences for a group. Once set, these preferences will be automatically applied to future expenses in that group unless overridden. This is a FREE operation.',
+  description: 'ONLY FOR SETTING DEFAULT PREFERENCES: View, set, or clear DEFAULT split preferences for a group that will apply to ALL FUTURE expenses. DO NOT use this tool when adding a single expense with a custom split - use add_expense_enhanced with split_percentage parameter instead. This tool is for cases where the user wants to SET A PERMANENT DEFAULT (e.g., "always split 90-10 in this group from now on"). For one-time custom splits (e.g., "add this expense with 90-10 split"), use add_expense_enhanced directly. This is a FREE operation.',
   inputSchema: {
     type: 'object',
     properties: {
