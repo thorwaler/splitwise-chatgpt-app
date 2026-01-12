@@ -13,23 +13,31 @@ import {
 
 /**
  * Tool types that count towards message limit
+ * These are the PRIMARY operations that users pay for
  */
 const COUNTED_TOOLS = new Set([
-  'add_expense',
-  'set_defaults',
-  'create_payment',
+  'add_expense_enhanced',  // PRIMARY: Adding expenses (counts toward limit)
+  'set_defaults',           // Setting user defaults (counts toward limit)
 ]);
 
 /**
- * Tool types that don't count (read-only operations)
+ * Tool types that don't count (read-only operations and setup)
  */
 const FREE_TOOLS = new Set([
+  // Setup and connection
+  'register_user',
+  'connect_splitwise',
+  
+  // Reading data
   'get_groups',
   'get_categories',
-  'get_expense_analytics',
-  'get_budget_status',
+  'get_analytics_enhanced',
+  'manage_split_preferences',
+  
+  // Payment operations (should be free)
   'check_payment_status',
-  'connect_splitwise',
+  'initiate_payment',
+  'verify_payment',
 ]);
 
 /**

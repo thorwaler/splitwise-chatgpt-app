@@ -288,7 +288,7 @@ async function getGroupSplitPreference(
  */
 export const addExpenseEnhancedTool = {
   name: 'add_expense_enhanced',
-  description: 'PRIMARY EXPENSE TOOL - Add an expense to Splitwise with flexible split options. SUPPORTS CUSTOM SPLITS IN ONE STEP: For one-time custom splits (e.g., "add €33 with 90-10 split"), use this tool directly with the split_percentage parameter - DO NOT call manage_split_preferences first. Examples: "90-10" (90% user / 10% other), "70-30", "60-40". The manage_split_preferences tool is ONLY for setting permanent defaults for all future expenses. ALWAYS use add_expense_enhanced instead of add_expense. When user says "add X with 90-10 split", directly use split_percentage="90-10" in this tool. This operation counts toward your message limit.',
+  description: 'PRIMARY EXPENSE TOOL - Add an expense to Splitwise. MINIMIZE BACK-AND-FORTH: When user requests to add an expense, if you\'re missing details (description, amount, group), ask for ALL missing details in ONE response before calling any tools. Example: "I can add that expense! Please provide: (1) expense description, (2) amount, (3) which group". SUPPORTS CUSTOM SPLITS IN ONE STEP: For splits (e.g., "90-10"), use split_percentage parameter directly - DO NOT call manage_split_preferences first. If group_id is not provided and no default is set, call get_groups to find the group ID, but include this in your initial response to minimize round-trips. This operation counts toward message limit.',
   inputSchema: {
     type: 'object',
     properties: {
