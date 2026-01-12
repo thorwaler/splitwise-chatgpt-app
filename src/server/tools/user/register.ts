@@ -59,7 +59,7 @@ export async function registerUserHandler(
  */
 export const registerUserTool = {
   name: 'register_user',
-  description: '⚠️ REQUIRED FIRST STEP ⚠️ You MUST call this tool BEFORE any other tools will work. This registers the user and returns: (1) session_token for all future calls, (2) oauth_url for Splitwise authorization, (3) is_connected status. IMPORTANT: If is_connected is false, provide the oauth_url to the user IMMEDIATELY in your response and ask them to click it to authorize. Once they return and say "connected" or similar, you can proceed with their request. If is_connected is true, proceed directly with their request. ALWAYS ask for the user\'s email AND their complete request details (expense description, amount, etc.) in your FIRST response to avoid multiple back-and-forth messages.',
+  description: '⚠️ REQUIRED FIRST STEP ⚠️ You MUST call this tool BEFORE any other tools will work. This registers the user and returns: (1) session_token for all future calls, (2) oauth_url for Splitwise authorization if needed, (3) is_connected status. CRITICAL FLOW: If is_connected=false, provide oauth_url and tell user to click it. DO NOT call any other tools until user confirms they clicked and authorized (they will say "connected", "done", "authorized" or similar). After user confirms, call this tool AGAIN to verify is_connected=true, then proceed with their original request. If is_connected=true from the start, skip OAuth and proceed directly. ALWAYS ask for the user\'s email AND their complete request details in your FIRST response.',
   inputSchema: {
     type: 'object',
     properties: {

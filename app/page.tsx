@@ -91,7 +91,15 @@ function PageContent() {
 
               {/* Action Button */}
               <button
-                onClick={() => window.close()}
+                onClick={() => {
+                  // Try to close window (works if opened via JavaScript)
+                  if (window.opener) {
+                    window.close();
+                  } else {
+                    // Otherwise redirect to ChatGPT
+                    window.location.href = 'https://chatgpt.com';
+                  }
+                }}
                 className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 Return to ChatGPT

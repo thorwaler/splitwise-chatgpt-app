@@ -65,7 +65,7 @@ export async function connectSplitwiseHandler(
  */
 export const connectSplitwiseTool = {
   name: 'connect_splitwise',
-  description: 'Connect user\'s Splitwise account via OAuth. Returns authorization URL if not connected, or connection status if already connected.',
+  description: 'DEPRECATED - DO NOT USE THIS TOOL. Use register_user instead, which handles both registration and connection status checking. This tool is kept for backwards compatibility only.',
   inputSchema: {
     type: 'object',
     properties: {
