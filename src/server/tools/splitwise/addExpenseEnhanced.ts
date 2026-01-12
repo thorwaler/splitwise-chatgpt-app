@@ -88,7 +88,7 @@ export async function addExpenseEnhancedHandler(
   // Check access and record usage
   const { user, usage } = await checkAndRecordToolAccess(
     session_token,
-    'add_expense'
+    'add_expense_enhanced'
   );
 
   // Get group ID (from input or user defaults)
@@ -105,6 +105,15 @@ export async function addExpenseEnhancedHandler(
 
   // Get group to find user IDs
   const group = await client.getGroup(parseInt(targetGroupId));
+  
+  if (!group) {
+    throw new Error(`Group with ID ${targetGroupId} not found. Please check the group ID.`);
+  }
+  
+  if (!group.members || !Array.isArray(group.members) || group.members.length === 0) {
+    throw new Error(`Group ${targetGroupId} has no members. Cannot create expense.`);
+  }
+  
   const groupMembers = group.members.map(m => m.id);
 
   // Determine split configuration
@@ -236,6 +245,14 @@ export async function addExpenseEnhancedHandler(
     date,
     ...splitConfig,
   });
+  
+  if (!expense) {
+    throw new Error('Failed to create expense. The Splitwise API did not return an expense object.');
+  }
+  
+  if (!expense.id) {
+    throw new Error('Failed to create expense. The returned expense has no ID.');
+  }
 
   return {
     success: true,
