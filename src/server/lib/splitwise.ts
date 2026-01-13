@@ -187,11 +187,21 @@ export class SplitwiseClient {
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`Splitwise API error: ${response.status} - ${error}`);
+      const errorText = await response.text();
+      console.error(`Splitwise API error (${response.status}):`, errorText);
+      console.error('Request endpoint:', endpoint);
+      console.error('Request body:', options.body);
+      throw new Error(`Splitwise API error: ${response.status} - ${errorText}`);
     }
 
-    return response.json();
+    const data = await response.json();
+    
+    // Log response for debugging (remove in production)
+    if (endpoint === '/create_expense') {
+      console.log('Splitwise createExpense response:', JSON.stringify(data));
+    }
+    
+    return data;
   }
 
   /**
@@ -235,15 +245,31 @@ export class SplitwiseClient {
       owed_share?: number;
     }>;
   }): Promise<SplitwiseExpense> {
-    const response = await this.apiRequest<{ expenses: SplitwiseExpense[] }>(
-      '/create_expense',
-      {
-        method: 'POST',
-        body: JSON.stringify(params),
+    try {
+      const response = await this.apiRequest<{ expenses: SplitwiseExpense[] }>(
+        '/create_expense',
+        {
+          method: 'POST',
+          body: JSON.stringify(params),
+        }
+      );
+      
+      if (!response || !response.expenses || !Array.isArray(response.expenses)) {
+        console.error('Splitwise API returned invalid response:', JSON.stringify(response));
+        throw new Error(`Splitwise API returned invalid format. Expected { expenses: [...] }, got: ${JSON.stringify(response)}`);
       }
-    );
-    
-    return response.expenses[0];
+      
+      if (response.expenses.length === 0) {
+        console.error('Splitwise API returned empty expenses array');
+        throw new Error('Splitwise API returned no expense. The expense may have been rejected by Splitwise.');
+      }
+      
+      return response.expenses[0];
+    } catch (error) {
+      console.error('createExpense error:', error);
+      console.error('createExpense params:', JSON.stringify(params));
+      throw error;
+    }
   }
 
   /**
