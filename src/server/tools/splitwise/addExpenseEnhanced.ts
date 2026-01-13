@@ -136,6 +136,7 @@ export async function addExpenseEnhancedHandler(
     }
 
     splitConfig = {
+      split_equally: false,
       users: groupMembers.map((userId, index) => ({
         user_id: userId,
         paid_share: userId === user.splitwise_user_id ? amount : 0,
@@ -171,6 +172,7 @@ export async function addExpenseEnhancedHandler(
     }
 
     splitConfig = {
+      split_equally: false,
       users: groupMembers.map((userId, index) => ({
         user_id: userId,
         paid_share: userId === user.splitwise_user_id ? amount : 0,
@@ -190,6 +192,7 @@ export async function addExpenseEnhancedHandler(
   } else if (user_splits) {
     // Custom per-user splits
     splitConfig = {
+      split_equally: false,
       users: user_splits.map(us => ({
         user_id: us.user_id,
         paid_share: us.user_id === parseInt(user.splitwise_user_id || '0') ? amount : 0,
@@ -206,6 +209,7 @@ export async function addExpenseEnhancedHandler(
       // Use saved preference
       if (savedPref.type === 'percentage' && savedPref.percentages) {
         splitConfig = {
+          split_equally: false,
           users: groupMembers.map((userId, index) => ({
             user_id: userId,
             paid_share: userId === user.splitwise_user_id ? amount : 0,
@@ -216,6 +220,7 @@ export async function addExpenseEnhancedHandler(
       } else if (savedPref.type === 'amount' && savedPref.amounts) {
         const ratio = amount / savedPref.amounts.reduce((a, b) => a + b, 0);
         splitConfig = {
+          split_equally: false,
           users: groupMembers.map((userId, index) => ({
             user_id: userId,
             paid_share: userId === user.splitwise_user_id ? amount : 0,
