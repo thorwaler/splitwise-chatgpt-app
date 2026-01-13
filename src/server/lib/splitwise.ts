@@ -177,11 +177,20 @@ export class SplitwiseClient {
 
     const url = `${SPLITWISE_API_BASE}${endpoint}`;
     
+    // Default headers, but allow overrides
+    const defaultHeaders: Record<string, string> = {
+      'Authorization': `Bearer ${this.accessToken}`,
+    };
+    
+    // Only add Content-Type: application/json if not already specified
+    if (!options.headers || !('Content-Type' in options.headers)) {
+      defaultHeaders['Content-Type'] = 'application/json';
+    }
+    
     const response = await fetch(url, {
       ...options,
       headers: {
-        'Authorization': `Bearer ${this.accessToken}`,
-        'Content-Type': 'application/json',
+        ...defaultHeaders,
         ...options.headers,
       },
     });
@@ -246,11 +255,53 @@ export class SplitwiseClient {
     }>;
   }): Promise<SplitwiseExpense> {
     try {
+      // Convert params to form-encoded format
+      const formData = new URLSearchParams();
+      
+      formData.append('description', params.description);
+      formData.append('cost', params.cost.toString());
+      
+      if (params.currency_code) {
+        formData.append('currency_code', params.currency_code);
+      }
+      
+      if (params.date) {
+        formData.append('date', params.date);
+      }
+      
+      if (params.category_id) {
+        formData.append('category_id', params.category_id.toString());
+      }
+      
+      if (params.group_id) {
+        formData.append('group_id', params.group_id.toString());
+      }
+      
+      if (params.split_equally !== undefined) {
+        formData.append('split_equally', params.split_equally.toString());
+      }
+      
+      // Add users array in form-encoded format
+      if (params.users && params.users.length > 0) {
+        params.users.forEach((user, index) => {
+          formData.append(`users__${index}__user_id`, user.user_id.toString());
+          if (user.paid_share !== undefined) {
+            formData.append(`users__${index}__paid_share`, user.paid_share.toString());
+          }
+          if (user.owed_share !== undefined) {
+            formData.append(`users__${index}__owed_share`, user.owed_share.toString());
+          }
+        });
+      }
+      
       const response = await this.apiRequest<{ expenses: SplitwiseExpense[] }>(
         '/create_expense',
         {
           method: 'POST',
-          body: JSON.stringify(params),
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData.toString(),
         }
       );
       
