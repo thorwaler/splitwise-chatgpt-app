@@ -310,7 +310,7 @@ async function getGroupSplitPreference(
  */
 export const addExpenseEnhancedTool = {
   name: 'add_expense_enhanced',
-  description: 'PRIMARY EXPENSE TOOL - Add an expense to Splitwise. MINIMIZE BACK-AND-FORTH: When user requests to add an expense, if you\'re missing details (description, amount, group), ask for ALL missing details in ONE response before calling any tools. Example: "I can add that expense! Please provide: (1) expense description, (2) amount, (3) which group". SUPPORTS CUSTOM SPLITS IN ONE STEP: For splits (e.g., "90-10"), use split_percentage parameter directly - DO NOT call manage_split_preferences first. If group_id is not provided and no default is set, call get_groups to find the group ID, but include this in your initial response to minimize round-trips. This operation counts toward message limit.',
+  description: 'PRIMARY EXPENSE TOOL - Add an expense to Splitwise. CRITICAL: Call this tool ONLY ONCE per expense request. Do NOT call it multiple times for the same expense - this will create duplicates. MINIMIZE BACK-AND-FORTH: When user requests to add an expense, if you\'re missing details (description, amount, group), ask for ALL missing details in ONE response before calling any tools. SUPPORTS CUSTOM SPLITS IN ONE STEP: For splits (e.g., "90-10"), use split_percentage parameter directly - DO NOT call manage_split_preferences first. If group_id is not provided and no default is set, call get_groups to find the group ID. This operation counts toward message limit.',
   inputSchema: {
     type: 'object',
     properties: {
