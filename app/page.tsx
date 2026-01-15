@@ -216,6 +216,37 @@ function PageContent() {
           </div>
         )}
       </div>
+
+      {/* Footer with Legal Links */}
+      <footer className="mt-12 pb-8">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 text-sm">
+            <a 
+              href="/privacy"
+              className="text-gray-600 hover:text-emerald-600 transition-colors font-medium"
+            >
+              Privacy Policy
+            </a>
+            <span className="hidden sm:inline text-gray-400">•</span>
+            <a 
+              href="/terms"
+              className="text-gray-600 hover:text-emerald-600 transition-colors font-medium"
+            >
+              Terms of Service
+            </a>
+            <span className="hidden sm:inline text-gray-400">•</span>
+            <a 
+              href="mailto:andreas@ammp.io"
+              className="text-gray-600 hover:text-emerald-600 transition-colors font-medium"
+            >
+              Contact
+            </a>
+          </div>
+          <p className="text-center text-gray-500 text-xs mt-4">
+            © 2026 Splitwise Synch. Not affiliated with Splitwise, Inc.
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
