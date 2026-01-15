@@ -256,20 +256,20 @@ export async function addExpenseEnhancedHandler(
   if (recentExpenseId) {
     console.log(`[Deduplication] Found recent expense ${recentExpenseId} for "${description}" - returning cached result`);
     
-    // Return the cached expense info
+    // Return the cached expense info (note: split_details not available from cache)
     return {
       success: true,
       expense: {
-        id: recentExpenseId as string,
+        id: parseInt(recentExpenseId as string),
         description,
         cost: amount.toString(),
         currency: currency,
         date: date || new Date().toISOString(),
         category: { id: finalCategoryId, name: getCategoryName(finalCategoryId) },
         group_id: parseInt(targetGroupId),
-        split_details: splitDescription,
+        split_details: 'custom split',
       },
-      message: `Returned existing expense (created <5s ago) - ${currency}${amount} "${description}" with ${splitDescription}`,
+      message: `Expense already created (prevented duplicate) - ${currency}${amount} "${description}"`,
       usage: {
         messages_remaining: usage.messagesRemaining,
       },
