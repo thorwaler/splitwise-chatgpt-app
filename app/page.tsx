@@ -91,7 +91,17 @@ function PageContent() {
 
               {/* Action Button */}
               <button
-                onClick={() => window.close()}
+                onClick={() => {
+                  // Attempt to close the window
+                  window.close();
+                  // If window.close() didn't work (window still open after 100ms),
+                  // show a message
+                  setTimeout(() => {
+                    if (!window.closed) {
+                      alert('Please close this tab manually to return to ChatGPT');
+                    }
+                  }, 100);
+                }}
                 className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 Return to ChatGPT

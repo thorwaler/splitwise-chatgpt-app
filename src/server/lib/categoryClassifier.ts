@@ -124,16 +124,20 @@ const KEYWORD_MAP: Record<number, string[]> = {
 export function classifyExpense(description: string): number {
   const lowerDesc = description.toLowerCase();
   
+  console.log(`[Category Classifier] Input: "${description}" -> lowercase: "${lowerDesc}"`);
+  
   // Check each category's keywords
   for (const [categoryId, keywords] of Object.entries(KEYWORD_MAP)) {
     for (const keyword of keywords) {
       if (lowerDesc.includes(keyword)) {
+        console.log(`[Category Classifier] MATCH: keyword "${keyword}" found -> category ${categoryId}`);
         return parseInt(categoryId);
       }
     }
   }
   
   // Default to General if no match
+  console.log(`[Category Classifier] NO MATCH: defaulting to GENERAL (${SPLITWISE_CATEGORIES.GENERAL})`);
   return SPLITWISE_CATEGORIES.GENERAL;
 }
 

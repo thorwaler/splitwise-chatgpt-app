@@ -248,6 +248,34 @@ export async function addExpenseEnhancedHandler(
     }
   }
 
+  // Deduplication: Check if same expense was created very recently (within 5 seconds)
+  // This prevents duplicate expenses from rapid tool calls
+  const dedupeKey = `expense:dedupe:${session_token}:${description}:${amount}:${targetGroupId}`;
+  const recentExpenseId = await redis.get(dedupeKey);
+  
+  if (recentExpenseId) {
+    console.log(`[Deduplication] Found recent expense ${recentExpenseId} for "${description}" - returning cached result`);
+    
+    // Return the cached expense info
+    return {
+      success: true,
+      expense: {
+        id: recentExpenseId as string,
+        description,
+        cost: amount.toString(),
+        currency: currency,
+        date: date || new Date().toISOString(),
+        category: { id: finalCategoryId, name: getCategoryName(finalCategoryId) },
+        group_id: parseInt(targetGroupId),
+        split_details: splitDescription,
+      },
+      message: `Returned existing expense (created <5s ago) - ${currency}${amount} "${description}" with ${splitDescription}`,
+      usage: {
+        messages_remaining: usage.messagesRemaining,
+      },
+    };
+  }
+
   // Create expense
   const expense = await client.createExpense({
     description,
@@ -266,6 +294,10 @@ export async function addExpenseEnhancedHandler(
   if (!expense.id) {
     throw new Error('Failed to create expense. The returned expense has no ID.');
   }
+  
+  // Cache expense ID for deduplication (5 second TTL)
+  await redis.setex(dedupeKey, 5, expense.id.toString());
+  console.log(`[Deduplication] Cached expense ${expense.id} for 5 seconds`);
 
   return {
     success: true,
