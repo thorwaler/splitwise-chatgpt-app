@@ -7,6 +7,7 @@
 import { createSplitwiseClient } from '../../lib/splitwise';
 import { getUser, redis } from '../../lib/database';
 import { checkAndRecordToolAccess } from '../../lib/middleware';
+import { classifyExpense, getCategoryName } from '../../lib/categoryClassifier';
 
 export interface SplitPreference {
   type: 'equal' | 'percentage' | 'amount' | 'custom';
@@ -98,6 +99,13 @@ export async function addExpenseEnhancedHandler(
     throw new Error(
       'Please specify a group_id or set a default group using set_defaults.'
     );
+  }
+  
+  // Auto-classify category if not provided
+  let finalCategoryId = category_id;
+  if (!finalCategoryId) {
+    finalCategoryId = classifyExpense(description);
+    console.log(`Auto-classified "${description}" as category ${finalCategoryId} (${getCategoryName(finalCategoryId)})`);
   }
 
   // Create Splitwise client
@@ -246,7 +254,7 @@ export async function addExpenseEnhancedHandler(
     cost: amount,
     currency_code: currency,
     group_id: parseInt(targetGroupId),
-    category_id,
+    category_id: finalCategoryId,
     date,
     ...splitConfig,
   });
