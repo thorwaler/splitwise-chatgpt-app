@@ -256,6 +256,11 @@ function handleToolsList(body: any) {
     name,
     description: config.definition.description,
     inputSchema: config.definition.inputSchema,
+    annotations: config.definition.annotations || {
+      readOnlyHint: false,
+      openWorldHint: true,
+      destructiveHint: true,
+    },
   }));
 
   return NextResponse.json(
