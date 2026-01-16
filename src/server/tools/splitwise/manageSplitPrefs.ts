@@ -203,4 +203,9 @@ export const manageSplitPrefsTool = {
     },
     required: ['session_token', 'group_id', 'action'],
   },
+  annotations: {
+    readOnlyHint: false,
+    openWorldHint: false,
+    destructiveHint: false,
+  },
 };

@@ -76,4 +76,9 @@ export const connectSplitwiseTool = {
     },
     required: ['session_token'],
   },
+  annotations: {
+    readOnlyHint: false,
+    openWorldHint: true,
+    destructiveHint: false,
+  },
 };

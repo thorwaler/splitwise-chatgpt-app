@@ -122,4 +122,9 @@ export const setDefaultsTool = {
     },
     required: ['session_token'],
   },
+  annotations: {
+    readOnlyHint: false,
+    openWorldHint: false,
+    destructiveHint: false,
+  },
 };

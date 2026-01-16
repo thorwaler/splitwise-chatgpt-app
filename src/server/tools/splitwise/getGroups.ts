@@ -78,4 +78,9 @@ export const getGroupsTool = {
     },
     required: ['session_token'],
   },
+  annotations: {
+    readOnlyHint: true,
+    openWorldHint: true,
+    destructiveHint: false,
+  },
 };

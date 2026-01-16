@@ -149,4 +149,9 @@ export const addExpenseTool = {
     },
     required: ['session_token', 'description', 'amount'],
   },
+  annotations: {
+    readOnlyHint: false,
+    openWorldHint: true,
+    destructiveHint: false,
+  },
 };

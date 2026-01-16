@@ -203,4 +203,9 @@ export const getExpenseAnalyticsTool = {
     },
     required: ['session_token'],
   },
+  annotations: {
+    readOnlyHint: true,
+    openWorldHint: true,
+    destructiveHint: false,
+  },
 };

@@ -403,4 +403,9 @@ export const addExpenseEnhancedTool = {
     },
     required: ['session_token', 'description', 'amount'],
   },
+  annotations: {
+    readOnlyHint: false,
+    openWorldHint: true,
+    destructiveHint: false,
+  },
 };

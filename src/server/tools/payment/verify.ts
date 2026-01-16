@@ -113,4 +113,9 @@ export const verifyPaymentTool = {
     },
     required: ['session_token'],
   },
+  annotations: {
+    readOnlyHint: false,
+    openWorldHint: false,
+    destructiveHint: false,
+  },
 };

@@ -97,4 +97,9 @@ export const initiatePaymentTool = {
     },
     required: ['session_token'],
   },
+  annotations: {
+    readOnlyHint: false,
+    openWorldHint: true,
+    destructiveHint: false,
+  },
 };

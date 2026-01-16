@@ -625,6 +625,11 @@ export const getAnalyticsEnhancedTool = {
     },
     required: ['session_token'],
   },
+  annotations: {
+    readOnlyHint: true,
+    openWorldHint: true,
+    destructiveHint: false,
+  },
 };
 
 // Export alias for convenience

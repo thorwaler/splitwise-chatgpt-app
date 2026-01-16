@@ -70,4 +70,9 @@ export const registerUserTool = {
     },
     required: ['email'],
   },
+  annotations: {
+    readOnlyHint: false,
+    openWorldHint: false,
+    destructiveHint: false,
+  },
 };

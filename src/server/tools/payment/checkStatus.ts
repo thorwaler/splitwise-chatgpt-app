@@ -82,4 +82,9 @@ export const checkPaymentStatusTool = {
     },
     required: ['session_token'],
   },
+  annotations: {
+    readOnlyHint: true,
+    openWorldHint: false,
+    destructiveHint: false,
+  },
 };
